@@ -14,7 +14,7 @@ export default function Notes() {
         ]);
     };
     const handleNewNote = (note: Note) => {
-        setMyNotes((notes) => [ ...notes, { ...note, id: notes.length } ]);
+        setMyNotes((notes) => [ ...notes, { ...note, id: notes.length + 1 } ]);
     };
     const handleDeleteNote = (note: Note) => {
         setMyNotes((notes) => notes.filter(notes => notes.id !== note.id));
