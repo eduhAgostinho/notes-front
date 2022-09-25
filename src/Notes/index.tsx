@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react';
 import { Note } from '../models/note';
 import NoteComponent from "../Note";
 import "./styles.css";
+import * as noteService from '../services/noteService';
 
 export default function Notes() {
     const [myNotes, setMyNotes] = useState<Note[]>([]);
-    const getNotes = () => {
-        setMyNotes([
-            { id: 1, title: 'My first note', content: 'meu conteúdo' },
-            { id: 2, title: 'título', content: 'conteúdo' },
-            { id: 3, title: 'título', content: 'conteúdo' },
-            { id: 4, title: 'título', content: 'conteúdo' },
-        ]);
+    const getNotes = async () => {
+        const notes = await noteService.getNotes();
+        
+        setMyNotes(notes);
     };
-    const handleNewNote = (note: Note) => {
-        setMyNotes((notes) => [ ...notes, { ...note, id: notes.length + 1 } ]);
+    const handleNewNote =  async (note: Note) => {
+        await noteService.createNote(note);
+        getNotes();
     };
-    const handleDeleteNote = (note: Note) => {
-        setMyNotes((notes) => notes.filter(notes => notes.id !== note.id));
+    const handleDeleteNote = async (note: Note) => {
+        await noteService.deleteNote(note.id);
+        getNotes();
     };
 
     useEffect(() => {
