@@ -25,9 +25,12 @@ export default function Notes() {
     }, []);
 
     return (
-        <div className='notesContainer'>
-            {myNotes.map((note, index) => <NoteComponent {...note} handleDeleteNote={handleDeleteNote} key={index} />)}
-            <NoteComponent isNewNote={true} handleNewNote={handleNewNote} />
-        </div>
+        <>
+            <h1>Minhas notas ({myNotes.length}/20)</h1>
+            <div className='notesContainer'>
+                {myNotes.map((note, index) => <NoteComponent {...note} handleDeleteNote={handleDeleteNote} key={index} />)}
+                <NoteComponent isNewNote={true} handleNewNote={handleNewNote} />
+            </div>
+        </>
     );
 }
