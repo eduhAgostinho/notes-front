@@ -1,0 +1,42 @@
+name: Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+    secrets:
+      aws_access_key:
+        required: true
+      aws_secret_key:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup the project
+      uses: actions/setup-node@v3.5.1
+      with:
+        node-version: 16.x
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm build
+
+    - name: Deploy
+      uses: reggionick/s3-deploy@v3
+      with:
+        folder: build
+        bucket: ${{ secrets.S3_BUCKET }}
+        bucket-region: ${{ vars.S3_BUCKET_REGION }}
+        dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}

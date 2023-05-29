@@ -1,0 +1,22 @@
+name: Tests Workflow
+
+on:
+  workflow_call:
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup the project
+      uses: actions/setup-node@v3.5.1
+      with:
+        node-version: 16.x
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Test the project
+      run: npm run test

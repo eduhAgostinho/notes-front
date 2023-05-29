@@ -1,0 +1,10 @@
+name: Standard Workflow Caller When Push Any Branch Except Main
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+  
+jobs:
+  call-standard-workflows:
+    uses: ./.github/workflows/tests_workflow.yml

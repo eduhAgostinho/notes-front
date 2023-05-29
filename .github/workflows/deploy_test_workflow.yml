@@ -1,0 +1,19 @@
+name: Test Workflow
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  call-standard-workflows:
+    uses: ./.github/workflows/tests_workflow.yml
+
+  deploy-test:
+    needs: build
+    uses: ./.github/workflows/deploy_workflow.yml
+    with:
+      env: Test
+    secrets:
+      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
