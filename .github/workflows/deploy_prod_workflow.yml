@@ -1,4 +1,4 @@
-name: Prod Workflow
+name: Deploy in Prod Workflow
 
 on:
   release:
@@ -9,7 +9,6 @@ jobs:
     uses: ./.github/workflows/tests_workflow.yml
 
   deploy-prod:
-    needs: build
     uses: ./.github/workflows/deploy_workflow.yml
     with:
       env: Prod
