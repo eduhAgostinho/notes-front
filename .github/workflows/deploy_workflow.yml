@@ -19,6 +19,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+      AWS_DEFAULT_REGION: ${{ vars.S3_BUCKET_REGION }}
 
     steps:
     - uses: actions/checkout@v3
@@ -34,10 +35,9 @@ jobs:
       run: npm run build
 
     - name: Deploy
-      uses: reggionick/s3-deploy@v3
-      with:
-        folder: build
-        bucket: ${{ secrets.S3_BUCKET }}
-        bucket-region: ${{ vars.S3_BUCKET_REGION }}
-        dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-        delete-removed: true
+    uses: lbertenasco/s3-deploy@v1
+    with:
+      folder: build
+      bucket: ${{ secrets.S3_BUCKET }}
+      dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+      invalidation: / *
