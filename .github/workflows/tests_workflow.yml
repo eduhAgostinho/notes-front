@@ -15,11 +15,8 @@ jobs:
       with:
         node-version: 16.x
 
-    - name: Test AWS CLI
-      run: aws help 
+    - name: Install dependencies
+      run: npm install
 
-    # - name: Install dependencies
-    #   run: npm install
-
-    # - name: Test the project
-    #   run: npm run test
+    - name: Test the project
+      run: npm run test
