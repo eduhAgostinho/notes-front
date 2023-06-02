@@ -38,4 +38,4 @@ jobs:
         aws-region: ${{ vars.S3_BUCKET_REGION }}
 
     - name: Deploy static site to S3 bucket
-      run: aws s3 sync ./public/ s3://${{ vars.S3_BUCKET_NAME }} --delete
+      run: aws s3 sync ./build/ s3://${{ vars.S3_BUCKET_NAME }} --delete

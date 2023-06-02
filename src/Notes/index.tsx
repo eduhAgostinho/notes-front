@@ -26,7 +26,7 @@ export default function Notes() {
 
     return (
         <>
-            <h1>My notes ({myNotes.length}/20)</h1>
+            <h1>My notes ({myNotes.length}/20)!</h1>
             <div className='notesContainer'>
                 {myNotes.map((note, index) => <NoteComponent {...note} handleDeleteNote={handleDeleteNote} key={index} />)}
                 <NoteComponent isNewNote={true} handleNewNote={handleNewNote} />
