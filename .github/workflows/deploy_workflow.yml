@@ -34,9 +34,9 @@ jobs:
     - name: Upload Artifactory
       if: ${{ inputs.env }} == ${{ vars.TEST_ENV_NAME }}
       uses: actions/upload-artifact@master
-        with:
-          name: ${{ github.sha }}
-          path: ./${{ github.sha }}
+      with:
+        name: ${{ github.sha }}
+        path: ./${{ github.sha }}
 
     - name: Download Artifactory
       if: ${{ inputs.env }} != ${{ vars.TEST_ENV_NAME }}
