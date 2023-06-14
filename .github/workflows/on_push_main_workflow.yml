@@ -1,0 +1,28 @@
+name: On Push Main
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  call-standard-workflows:
+    uses: ./.github/workflows/tests_workflow.yml
+
+  deploy-test:
+    needs: call-standard-workflows
+    uses: ./.github/workflows/deploy_workflow.yml
+    with:
+      env: ${{ vars.TEST_ENV_NAME }}
+    secrets:
+      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  deploy-prod:
+    needs: deploy-test
+    uses: ./.github/workflows/deploy_workflow.yml
+    with:
+      env: ${{ vars.PROD_ENV_NAME }}
+    secrets:
+      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
