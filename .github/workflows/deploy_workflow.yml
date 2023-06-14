@@ -28,7 +28,22 @@ jobs:
       run: npm install
 
     - name: Build
-      run: npm run build
+      if: ${{ inputs.env }} == ${{ vars.TEST_ENV_NAME }}
+      run: npm run build && mv ./build ./${{ github.sha }}
+    
+    - name: Upload Artifactory
+      if: ${{ inputs.env }} == ${{ vars.TEST_ENV_NAME }}
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ github.sha }}
+        path: ./${{ github.sha }}
+
+    - name: Download Artifactory
+      if: ${{ inputs.env }} != ${{ vars.TEST_ENV_NAME }}
+      uses: actions/download-artifact@master
+      with:
+        name: ${{ github.sha }}
+        path: ./
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -38,4 +53,4 @@ jobs:
         aws-region: ${{ vars.S3_BUCKET_REGION }}
 
     - name: Deploy static site to S3 bucket
-      run: aws s3 sync ./build/ s3://${{ vars.S3_BUCKET_NAME }} --delete
+      run: aws s3 sync ./${{ github.sha }} s3://${{ vars.S3_BUCKET_NAME }} --delete
